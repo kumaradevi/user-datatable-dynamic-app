@@ -39,8 +39,8 @@ const UserTable = () => {
         <div className='border border-gray-500 px-5 py-2 w-[300px]'>
             <input type="search"  placeholder='search here...' className='outline-0' value={query} onChange={(e)=>setQuery(e.target.value)}/>
         </div>
-    <div className='w-[700px] min-h-[200px] shadow-md ' >
-        <table className='w-[100%] h-[100%] border-collapse '>
+    <div className='w-[700px] min-h-[200px] shadow-md overflow-scroll' >
+        <table className='w-[100%] h-[100%] border-collapse table-fixed'>
         <thead className=''>
           <tr className='bg-blue-100'>
             <th className='p-2 text-left'>id</th>

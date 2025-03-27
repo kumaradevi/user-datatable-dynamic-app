@@ -5,7 +5,7 @@ import DropdownMenu from "./DropdownMenu";
 const Navbar = () => {
     const [isShow,setIsShow]=useState(false);
   return (
-    <div className="bg-blue-200 text-white w-full h-[80px]">
+    <div className="bg-blue-200 text-white  w-[85%] h-[80px]">
       <div className="flex justify-between items-center h-full mx-20">
         {/* logo */}
         <div>
