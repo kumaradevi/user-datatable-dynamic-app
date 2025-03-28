@@ -2,13 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import data from "../utils/data";
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 const UserTable = () => {
     const [rows,setRows]=useState(5);
     const [page,setPage]=useState(1);
     const [query,setQuery]=useState("");
     const [userData,setUserData]=useState(data)
-   console.log(rows,"rows")
+;
     
    let startIndex=(page-1)*rows;
    let endIndex=startIndex+rows;
@@ -18,10 +20,8 @@ const UserTable = () => {
     return d.name.toLowerCase().includes(query.toLowerCase());
    }): (rows || page)? userData.slice(startIndex,endIndex).map((d)=>{ return d}) : userData;
 
-
-   const handleEdit=(id)=>{
-
-   }
+   
+   
 
    const handleDelete=(id)=>{
     console.log(id)
@@ -35,8 +35,8 @@ const UserTable = () => {
       setPage(prev=>prev<totalPages ? prev+1 : prev)
    }
   return (
-    <div className='flex  items-center w-full flex-col gap-12 mt-12'>
-        <div className='border border-gray-500 px-5 py-2 w-[300px]'>
+    <div className='flex items-center w-full flex-col gap-12 mt-12 '>
+        <div className='border border-gray-500 px-5 py-2 w-[300px] rounded-full ml-[-55%]'>
             <input type="search"  placeholder='search here...' className='outline-0' value={query} onChange={(e)=>setQuery(e.target.value)}/>
         </div>
     <div className='w-[700px] min-h-[200px] shadow-md overflow-scroll' >
@@ -57,8 +57,7 @@ const UserTable = () => {
             <td className='p-2'>{d.name}</td>
             <td className='p-2'>{d.age}</td>
             <td className='p-2 flex justify-center gap-6'>
-                <button className='bg-green-500 text-white px-4 py-1 rounded-lg hover:bg-green-700 cursor-pointer transition'>Edit</button>
-           <button className='bg-red-500 text-white px-4 py-1 rounded-lg cursor-pointer hover:bg-red-700 transition' onClick={()=>handleDelete(d.id)}>Delete</button>
+                   <button className='bg-red-500 text-white px-4 py-1 rounded-lg cursor-pointer hover:bg-red-700 transition' onClick={()=>handleDelete(d.id)}>Delete</button>
            </td>
           </tr>
             ))}

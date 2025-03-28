@@ -1,39 +1,52 @@
 "use client";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { use, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import bcrypt from "bcryptjs";
-import axios from 'axios';
+import {useDispatch, useSelector} from "react-redux"
+import { setAuthUser } from '../utils/userSlice';
 
 const Page = () => {
     const [username,setUsername]=useState("");
     const [email,setEmail]=useState("");
     const [password,setPassword]=useState("");
     const [confirmPassword,setConfirmPassword]=useState("");
-    const [error,setError]=useState("")
+   
     const router=useRouter();
-    
+    const dispatch=useDispatch()
+   const authUser=useSelector((state)=>state.user.user)
     const handleSignup=async()=>{
-      try{
-        if(password !== confirmPassword){
-            toast.error("password do not match")
-            return
+        try{
+            if(!email || !username || !password || !confirmPassword){
+                toast.error("missing fields")
+                return
+            }
+            if(password !== confirmPassword){
+                toast.error("mismatched password")
+                return
+            }
+            const hashedPassword=await bcrypt.hash(password,10);
+            const newUser={username,email,password:hashedPassword}
+            localStorage.setItem("username",username);
+            localStorage.setItem("email",email);
+            localStorage.setItem("password",hashedPassword);
+          
+            
+            dispatch(setAuthUser(newUser));
+          
+            toast.success('signed up successfully');
+            setTimeout(() => {
+                router.push('/login')
+            }, 2000);
+            
         }
-          const res=await axios.post('http://localhost:3000/api/signup',{username,password});
-          localStorage.setItem("username",res.data.username);
-          localStorage.setItem("password",res.data.password)
-          toast.success("signed up successfully");
-          setTimeout(()=>{
-           router.push('/login')
-          },2000)
-          console.log(res);
-
-      }
-      catch(err){
-        console.log(err.message)
-      }
+        catch(err){
+           toast.error("internal error")
+        }
+   
     }
+
   return (
    <div className='flex justify-center items-center w-full h-[100vh]'>
 
